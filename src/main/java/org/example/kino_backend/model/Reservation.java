@@ -34,4 +34,9 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name = "showing_id")
     private Showing showing;
+
+    @PrePersist
+    private void onCreate(){
+        this.createdAt = LocalDateTime.now();
+    }
 }

@@ -26,4 +26,9 @@ public class ReservationSeat {
 
     private UUID ticketUuid;
     private boolean checkedIn;
+
+    @PrePersist
+    private void onCreate() {
+        this.ticketUuid = UUID.randomUUID();
+    }
 }
