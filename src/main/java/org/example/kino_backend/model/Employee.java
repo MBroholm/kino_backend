@@ -23,6 +23,6 @@ public class Employee {
     private Set<EmployeeRole> role = new HashSet<>();
 
     @ManyToOne
-    @JoinColumn(name = "cinema_id", referencedColumnName = "cinemaId")
+    @JoinColumn(name = "cinema_id")
     private Cinema cinema;
 }

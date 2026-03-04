@@ -19,7 +19,7 @@ public class Theatre {
     private int theatreNumber;
 
     @ManyToOne
-    @JoinColumn(name = "cinema_id", referencedColumnName = "cinemaId")
+    @JoinColumn(name = "cinema_id")
     private Cinema cinema;
 
     @OneToMany(mappedBy = "theatre")

@@ -20,11 +20,11 @@ public class Showing {
     private double price;
 
     @ManyToOne
-    @JoinColumn(name = "movie", referencedColumnName = "movieId")
+    @JoinColumn(name = "movie_id")
     private Movie movie;
 
     @ManyToOne
-    @JoinColumn(name = "theatre", referencedColumnName = "theatreId")
+    @JoinColumn(name = "theatre_id")
     private Theatre theatre;
 
     @OneToMany(mappedBy = "showing")
