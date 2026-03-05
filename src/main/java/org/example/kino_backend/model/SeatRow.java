@@ -23,5 +23,5 @@ public class SeatRow {
     private Set<Seat> seats = new HashSet<>();
 
     @Column(nullable = false)
-    private int SeatRowNumber;
+    private int seatRowNumber;
 }
