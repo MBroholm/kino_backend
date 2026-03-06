@@ -50,8 +50,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ steps.owner.outputs.value }}/todo-app:latest
-            ghcr.io/${{ steps.owner.outputs.value }}/todo-app:${{ github.sha }}
+            ghcr.io/${{ steps.owner.outputs.value }}/kino_backend:latest
+            ghcr.io/${{ steps.owner.outputs.value }}/kino_backend:${{ github.sha }}
 
   deploy:
     needs: [build-and-push-image]
