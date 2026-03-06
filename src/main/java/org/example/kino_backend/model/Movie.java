@@ -10,7 +10,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-public class Movie {
+public class Movie implements Identifiable<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long movieId;
@@ -33,5 +33,13 @@ public class Movie {
     @OneToMany(mappedBy = "movie")
     private Set<Showing> showings = new HashSet<>();
 
+    @Override
+    public void setId(Long id) {
+        this.movieId = id;
+    }
 
+    @Override
+    public Long getId() {
+        return movieId;
+    }
 }

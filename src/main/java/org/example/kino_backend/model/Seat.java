@@ -10,7 +10,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-public class Seat {
+public class Seat implements Identifiable<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long seatId;
@@ -24,4 +24,14 @@ public class Seat {
 
     @Column(nullable = false)
     private int seatNumber;
+
+    @Override
+    public void setId(Long id) {
+        this.seatId = id;
+    }
+
+    @Override
+    public Long getId() {
+        return seatId;
+    }
 }

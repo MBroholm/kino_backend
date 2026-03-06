@@ -1,12 +1,13 @@
 package org.example.kino_backend.controller;
 
+import org.example.kino_backend.model.Identifiable;
 import org.example.kino_backend.service.CrudService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-public abstract class CrudRestController<T, ID> {
+public abstract class CrudRestController<T extends Identifiable<ID>, ID> {
 
     protected final CrudService<T, ID> service;
 
@@ -36,6 +37,8 @@ public abstract class CrudRestController<T, ID> {
         if (!service.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
+
+        entity.setId(id);
         return ResponseEntity.ok(service.save(entity));
     }
 

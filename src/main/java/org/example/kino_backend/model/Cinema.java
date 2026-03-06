@@ -10,7 +10,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-public class Cinema {
+public class Cinema implements Identifiable<Long>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cinemaId;
@@ -26,4 +26,14 @@ public class Cinema {
 
     @OneToMany(mappedBy = "cinema")
     private Set<Employee> employees = new HashSet<>();
+
+    @Override
+    public void setId(Long id) {
+        this.cinemaId = id;
+    }
+
+    @Override
+    public Long getId() {
+        return cinemaId;
+    }
 }

@@ -10,7 +10,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-public class Employee {
+public class Employee implements Identifiable<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long employeeId;
@@ -28,4 +28,14 @@ public class Employee {
     @ManyToOne
     @JoinColumn(name = "cinema_id")
     private Cinema cinema;
+
+    @Override
+    public void setId(Long id) {
+        this.employeeId = id;
+    }
+
+    @Override
+    public Long getId() {
+        return employeeId;
+    }
 }

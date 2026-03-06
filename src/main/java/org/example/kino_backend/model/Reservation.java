@@ -12,7 +12,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-public class Reservation {
+public class Reservation implements Identifiable<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,5 +41,15 @@ public class Reservation {
     private void onCreate(){
         this.createdAt = LocalDateTime.now();
         this.status = ReservationStatus.RESERVED;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.reservationId = id;
+    }
+
+    @Override
+    public Long getId() {
+        return reservationId;
     }
 }
