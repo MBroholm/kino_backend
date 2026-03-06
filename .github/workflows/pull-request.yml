@@ -2,6 +2,7 @@ name: pull-request.yml
 on:
   pull_request:
     branches: [ main, test, dev ]
+  workflow_dispatch:
 
 jobs:
   check:
