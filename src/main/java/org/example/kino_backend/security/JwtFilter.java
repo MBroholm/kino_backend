@@ -12,7 +12,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 //OncePerRequestFilter is a filter that is executed only once per request(Duh)
-//All request go through this filter before our controller ensuring auths and security
+//All request go through this filter before reaching our controller ensuring valid auths and security
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
@@ -36,7 +36,10 @@ public class JwtFilter extends OncePerRequestFilter {
             //Validating the token, creating auth object, storing it in the security context
             if (jwtUtil.validateToken(token)) {
                 String username = jwtUtil.getUsernameFromToken(token);
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, null, List.of());
+                UsernamePasswordAuthenticationToken auth =
+                        new UsernamePasswordAuthenticationToken(username, null, List.of());
+                //List.of is set instead of null due to a quirk in spring sec. it would treat null as not authenticated.
+                //Its just an empty list that could be used for access roles later(Admin, owner, clerk etc.)
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
         }
