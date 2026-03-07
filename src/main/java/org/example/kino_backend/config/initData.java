@@ -6,6 +6,7 @@ import org.example.kino_backend.model.Movie;
 import org.example.kino_backend.model.Theatre;
 import org.example.kino_backend.repository.CinemaRepository;
 import org.example.kino_backend.repository.MovieRepository;
+import org.jspecify.annotations.NonNull;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +25,7 @@ public class initData implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String @NonNull ... args) throws Exception {
         initCinemaWithTheatres();
         initMovies();
     }
