@@ -1,0 +1,36 @@
+name: pull-request.yml
+on:
+  pull_request:
+    branches: [ main, test, dev ]
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build and test
+        run: mvn clean package
+
+      - name: Check for test failures
+        if: failure()
+        run: |
+          echo "## ❌ Tests Failed" >> $GITHUB_STEP_SUMMARY
+          echo "Please check the test output above." >> $GITHUB_STEP_SUMMARY
+
+      - name: Report success
+        if: success()
+        run: |
+          echo "## ✅ All Tests Passed" >> $GITHUB_STEP_SUMMARY
+          echo "Ready for review!" >> $GITHUB_STEP_SUMMARY
+

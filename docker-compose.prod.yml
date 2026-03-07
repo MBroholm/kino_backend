@@ -1,0 +1,28 @@
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: kino_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    image: ghcr.io/ek-barhjamagmik/kino_backend:latest
+    environment:
+      DATABASE_URL: jdbc:postgresql://db:5432/kino_db
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: ${DB_PASSWORD:-postgres}
+    depends_on:
+      - db
+
+  frontend:
+    image: ghcr.io/ek-barhjamagmik/kino_frontend:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+
+volumes:
+  pgdata:
