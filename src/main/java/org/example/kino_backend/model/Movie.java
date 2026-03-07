@@ -33,6 +33,18 @@ public class Movie implements Identifiable<Long> {
     @OneToMany(mappedBy = "movie")
     private Set<Showing> showings = new HashSet<>();
 
+    public Movie() {
+    }
+
+    public Movie(String title, int ageLimit, int duration,
+                 Set<Category> categories, String description) {
+        this.title = title;
+        this.ageLimit = ageLimit;
+        this.duration = duration;
+        this.categories = categories;
+        this.description = description;
+    }
+
     @Override
     public void setId(Long id) {
         this.movieId = id;
