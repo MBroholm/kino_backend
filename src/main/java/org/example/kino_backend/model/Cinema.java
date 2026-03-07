@@ -27,6 +27,14 @@ public class Cinema implements Identifiable<Long>{
     @OneToMany(mappedBy = "cinema")
     private Set<Employee> employees = new HashSet<>();
 
+    public void addTheatre(Theatre theatre) {
+        if (theatre == null) {
+            throw new IllegalArgumentException("Theatre cannot be null");
+        }
+        theatre.setCinema(this);
+        theatres.add(theatre);
+    }
+
     @Override
     public void setId(Long id) {
         this.cinemaId = id;

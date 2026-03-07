@@ -25,6 +25,13 @@ public class Seat implements Identifiable<Long> {
     @Column(nullable = false)
     private int seatNumber;
 
+    public Seat() {}
+
+    public Seat(SeatRow seatRow, int seatNumber) {
+        this.seatRow = seatRow;
+        this.seatNumber = seatNumber;
+    }
+
     @Override
     public void setId(Long id) {
         this.seatId = id;
