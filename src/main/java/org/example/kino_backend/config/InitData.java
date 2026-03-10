@@ -14,12 +14,12 @@ import java.util.List;
 import java.util.Set;
 
 @Component
-public class initData implements CommandLineRunner {
+public class InitData implements CommandLineRunner {
 
     private final CinemaRepository cinemaRepository;
     private final MovieRepository movieRepository;
 
-    public initData(CinemaRepository cinemaRepository, MovieRepository movieRepository) {
+    public InitData(CinemaRepository cinemaRepository, MovieRepository movieRepository) {
         this.cinemaRepository = cinemaRepository;
         this.movieRepository = movieRepository;
     }
