@@ -3,6 +3,7 @@ package org.example.kino_backend.security;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -10,11 +11,13 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private final SecretKey key = Keys.hmacShaKeyFor(
-            "zyAo&cUmnx;QdzHOq@;jGD}%zXxFopMXNdx(OMWT<Z}".getBytes()
-    );
-
+    private final SecretKey key;
     private final long EXPIRATION_TIME = 1000 * 60 * 60 * 8; // 8 hours
+
+    public JwtUtil(@Value("${jwt.secret}") String secret) {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes());
+    }
+
 
     //This method is called on login, takes the username and generates a token
     public String generateToken(String username) {
