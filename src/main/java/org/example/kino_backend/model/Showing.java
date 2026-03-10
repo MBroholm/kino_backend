@@ -20,6 +20,9 @@ public class Showing implements Identifiable<Long> {
     private LocalDateTime startTime;
 
     @Column(nullable = false)
+    private LocalDateTime endTime;
+
+    @Column(nullable = false)
     private double price;
 
     @ManyToOne
