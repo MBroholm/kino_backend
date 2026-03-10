@@ -1,13 +1,19 @@
 package org.example.kino_backend.service;
 
 import org.example.kino_backend.dto.CreateShowingRequest;
+import org.example.kino_backend.dto.ShowingSeatDTO;
 import org.example.kino_backend.model.Movie;
+import org.example.kino_backend.model.ReservationStatus;
 import org.example.kino_backend.model.Showing;
 import org.example.kino_backend.model.Theatre;
 import org.example.kino_backend.repository.MovieRepository;
 import org.example.kino_backend.repository.ShowingRepository;
 import org.example.kino_backend.repository.TheatreRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ShowingService extends CrudServiceImpl<Showing, Long> {
@@ -53,5 +59,23 @@ public class ShowingService extends CrudServiceImpl<Showing, Long> {
 
         // 6. Save
         return save(showing); // inherited from CrudServiceImpl
+    }
+
+    public List<ShowingSeatDTO> getSeatsForShowing(Long showingId){
+        Showing showing = findById(showingId)
+                .orElseThrow(() -> new IllegalArgumentException("Showing not found: " + showingId));
+
+        Set<Long> occupiedSeatIds = showing.getReservationSet().stream()
+                .filter(r -> r.getStatus() != ReservationStatus.CANCELLED)
+                .flatMap(r -> r.getReservationSeats().stream())
+                .map(rs -> rs.getSeat().getSeatId())
+                .collect(Collectors.toSet());
+
+        return showing.getTheatre().getSeatRows().stream()
+                .flatMap(row -> row.getSeats().stream())
+                .map(seat -> ShowingSeatDTO.fromEntity(seat, occupiedSeatIds.contains(seat.getSeatId())))
+                .toList();
+
+
     }
 }
