@@ -61,16 +61,20 @@ public class ShowingService extends CrudServiceImpl<Showing, Long> {
         return save(showing); // inherited from CrudServiceImpl
     }
 
+        // Returns all seats for the showing, marking those that are occupied
     public List<ShowingSeatDTO> getSeatsForShowing(Long showingId){
         Showing showing = findById(showingId)
                 .orElseThrow(() -> new IllegalArgumentException("Showing not found: " + showingId));
 
+        // Collect IDs of all seats that are taken — ignore cancelled reservations
         Set<Long> occupiedSeatIds = showing.getReservationSet().stream()
                 .filter(r -> r.getStatus() != ReservationStatus.CANCELLED)
                 .flatMap(r -> r.getReservationSeats().stream())
                 .map(rs -> rs.getSeat().getSeatId())
                 .collect(Collectors.toSet());
 
+        // Map every seat in the theatre to a DTO, flagging it as occupied
+        // if its ID exists in the occupied set
         return showing.getTheatre().getSeatRows().stream()
                 .flatMap(row -> row.getSeats().stream())
                 .map(seat -> ShowingSeatDTO.fromEntity(seat, occupiedSeatIds.contains(seat.getSeatId())))
