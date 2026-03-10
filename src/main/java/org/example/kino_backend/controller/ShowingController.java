@@ -2,6 +2,7 @@ package org.example.kino_backend.controller;
 
 import org.example.kino_backend.dto.CreateShowingRequest;
 import org.example.kino_backend.dto.ShowingDTO;
+import org.example.kino_backend.dto.ShowingSeatDTO;
 import org.example.kino_backend.model.Showing;
 import org.example.kino_backend.service.ShowingService;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,11 @@ public class ShowingController {
                 .map(ShowingDTO::fromEntity)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{id}/seats")
+    public ResponseEntity<List<ShowingSeatDTO>> getSeats(@PathVariable Long id) {
+        return ResponseEntity.ok(showingService.getSeatsForShowing(id));
     }
 
     @PostMapping
