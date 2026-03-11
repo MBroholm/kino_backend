@@ -39,7 +39,7 @@ public class TheatreService extends CrudServiceImpl<Theatre, Long> {
         Theatre theatre = findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Theatre not found: " + id));
 
-        validateNoUpcomingShowings(theatre);
+        validateNoUpcomingShowings(theatre, "update");
 
         theatre.initializeSeatRows(req.numberOfRows(), req.seatsPerRow());
         return save(theatre);
@@ -49,14 +49,14 @@ public class TheatreService extends CrudServiceImpl<Theatre, Long> {
     public void delete(Long id) {
         Theatre theatre = findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Theatre not found: " + id));
-        validateNoUpcomingShowings(theatre);
+        validateNoUpcomingShowings(theatre, "delete");
         deleteById(id);
     }
 
     //Helper methods
-    private void validateNoUpcomingShowings(Theatre theatre) {
+    private void validateNoUpcomingShowings(Theatre theatre, String operation) {
         if (showingRepository.existsByTheatreAndStartTimeAfter(theatre, LocalDateTime.now())) {
-            throw new IllegalArgumentException("Cannot update theatre with upcoming showings");
+            throw new IllegalArgumentException("Cannot " + operation + " theatre with upcoming showings");
         }
     }
 }
