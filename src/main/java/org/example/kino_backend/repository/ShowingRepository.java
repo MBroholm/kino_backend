@@ -20,4 +20,6 @@ public interface ShowingRepository extends JpaRepository<Showing, Long> {
                                           @Param("start") LocalDateTime start,
                                           @Param("end") LocalDateTime end
     );
+
+    boolean existsByTheatreAndStartTimeAfter(Theatre theatre, LocalDateTime now);
 }
