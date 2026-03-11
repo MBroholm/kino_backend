@@ -1,21 +1,32 @@
+
 services:
   db:
-    image: postgres:17
+    image: mysql:8.0
     environment:
-      POSTGRES_DB: kino_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      MYSQL_DATABASE: kino_db
+      MYSQL_USER: jens
+      MYSQL_PASSWORD: ${DB_PASSWORD:-x}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-x}
+    ports:
+      - "3306:3306"
+    command: --default-authentication-plugin=mysql_native_password
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - mysqldata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${DB_PASSWORD:-x}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   app:
     image: ghcr.io/ek-barhjamagmik/kino_backend:latest
     environment:
-      DATABASE_URL: jdbc:postgresql://db:5432/kino_db
-      DATABASE_USERNAME: postgres
-      DATABASE_PASSWORD: ${DB_PASSWORD:-postgres}
+      DATABASE_URL: jdbc:mysql://db:3306/kino_db
+      DATABASE_USERNAME: jens
+      DATABASE_PASSWORD: ${DB_PASSWORD:-x}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   frontend:
     image: ghcr.io/ek-barhjamagmik/kino_frontend:latest
@@ -25,4 +36,4 @@ services:
       - app
 
 volumes:
-  pgdata:
+  mysqldata:
