@@ -23,8 +23,8 @@ public record ShowingDTO(
                 showing.getStartTime(),
                 showing.getEndTime(),
                 showing.getPrice(),
-                showing.getMovie().getMovieId(),
-                showing.getMovie().getTitle(),
+                movie.getMovieId(),
+                movie.getTitle(),
                 showing.getTheatre().getTheatreId(),
                 showing.getTheatre().getTheatreNumber()
         );

@@ -12,6 +12,11 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     volumes:
       - mysqldata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${DB_PASSWORD:-x}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   app:
     image: ghcr.io/ek-barhjamagmik/kino_backend:latest
@@ -20,7 +25,8 @@ services:
       DATABASE_USERNAME: jens
       DATABASE_PASSWORD: ${DB_PASSWORD:-x}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   frontend:
     image: ghcr.io/ek-barhjamagmik/kino_frontend:latest
