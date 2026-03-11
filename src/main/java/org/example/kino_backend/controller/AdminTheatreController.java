@@ -3,6 +3,7 @@ package org.example.kino_backend.controller;
 
 import org.example.kino_backend.dto.CreateTheatreRequest;
 import org.example.kino_backend.dto.TheatreDTO;
+import org.example.kino_backend.dto.UpdateTheatreRequest;
 import org.example.kino_backend.model.Theatre;
 import org.example.kino_backend.service.TheatreService;
 import org.springframework.http.HttpStatus;
@@ -40,7 +41,7 @@ public class AdminTheatreController {
     }
 
     @PutMapping
-    public ResponseEntity<TheatreDTO> update(@PathVariable Long id, @RequestBody CreateTheatreRequest req) {
+    public ResponseEntity<TheatreDTO> update(@PathVariable Long id, @RequestBody UpdateTheatreRequest req) {
         Theatre theatre = theatreService.update(id, req);
         TheatreDTO dto = TheatreDTO.fromEntity(theatre);
 
