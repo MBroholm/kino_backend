@@ -153,6 +153,8 @@ public class InitData implements CommandLineRunner {
         admin.setPasswordHash(passwordHash);
 
         employeeRepository.save(admin);
+
+        System.out.println("Employee 'admin' initialized");
     }
 
     private void initShowings() {
