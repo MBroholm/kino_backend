@@ -34,7 +34,7 @@ public class Showing implements Identifiable<Long> {
     private Theatre theatre;
 
     @OneToMany(mappedBy = "showing", cascade = CascadeType.ALL)
-    private Set<Reservation> reservationSeat = new HashSet<>();
+    private Set<Reservation> reservationSeats = new HashSet<>();
 
     @Override
     public void setId(Long id) {

@@ -128,7 +128,7 @@ public class ShowingService extends CrudServiceImpl<Showing, Long> {
                 .orElseThrow(() -> new IllegalArgumentException("Showing not found: " + showingId));
 
         // Collect IDs of all seats that are taken — ignore cancelled reservations
-        Set<Long> occupiedSeatIds = showing.getReservationSeat().stream()
+        Set<Long> occupiedSeatIds = showing.getReservationSeats().stream()
                 .filter(r -> r.getStatus() != ReservationStatus.CANCELLED)
                 .flatMap(r -> r.getReservationSeats().stream())
                 .map(rs -> rs.getSeat().getSeatId())
