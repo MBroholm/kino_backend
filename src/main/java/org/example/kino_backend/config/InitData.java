@@ -1,36 +1,43 @@
 package org.example.kino_backend.config;
 
-import org.example.kino_backend.model.Category;
-import org.example.kino_backend.model.Cinema;
-import org.example.kino_backend.model.Movie;
-import org.example.kino_backend.model.Theatre;
-import org.example.kino_backend.repository.CinemaRepository;
-import org.example.kino_backend.repository.MovieRepository;
+import org.example.kino_backend.model.*;
+import org.example.kino_backend.repository.*;
 import org.jspecify.annotations.NonNull;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
 @Component
-public class initData implements CommandLineRunner {
+public class InitData implements CommandLineRunner {
 
     private final CinemaRepository cinemaRepository;
     private final MovieRepository movieRepository;
+    private final EmployeeRepository employeeRepository;
+    private final ShowingRepository showingRepository;
+    private final TheatreRepository theatreRepository;
 
-    public initData(CinemaRepository cinemaRepository, MovieRepository movieRepository) {
+    public InitData(CinemaRepository cinemaRepository, MovieRepository movieRepository, EmployeeRepository employeeRepository, ShowingRepository showingRepository, TheatreRepository theatreRepository) {
         this.cinemaRepository = cinemaRepository;
         this.movieRepository = movieRepository;
+        this.employeeRepository = employeeRepository;
+        this.showingRepository = showingRepository;
+        this.theatreRepository = theatreRepository;
     }
 
     @Override
     public void run(String @NonNull ... args) throws Exception {
         initCinemaWithTheatres();
         initMovies();
+        initAdmin();
+        initShowings();
     }
 
-    public void initCinemaWithTheatres() {
+    private void initCinemaWithTheatres() {
         // Check if cinema already exists
         boolean exists = cinemaRepository.existsByName("Kino");
 
@@ -57,7 +64,7 @@ public class initData implements CommandLineRunner {
         System.out.println("Cinema 'Kino' created with theatres.");
     }
 
-    public void initMovies() {
+    private void initMovies() {
 
         List<Movie> movies = List.of(
                 new Movie("The Silent Horizon", 12, 118,
@@ -129,5 +136,81 @@ public class initData implements CommandLineRunner {
         }
 
         System.out.println("Movie initialization complete.");
+    }
+
+    private void initAdmin() {
+        boolean exists = employeeRepository.existsByUsername("admin");
+
+        if (exists) {
+            System.out.println("Employee 'admin' already exists — skipping init.");
+            return;
+        }
+
+        Employee admin = new Employee();
+        admin.setUsername("admin");
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String passwordHash = encoder.encode("admin");
+        admin.setPasswordHash(passwordHash);
+
+        employeeRepository.save(admin);
+
+        System.out.println("Employee 'admin' initialized");
+    }
+
+    private void initShowings() {
+        if (showingRepository.count() > 0) {
+            System.out.println("Showings already exist — skipping init.");
+            return;
+        }
+
+        List<Movie> movies = movieRepository.findAll();
+        List<Theatre> theatres = theatreRepository.findAll();
+
+        if (movies.size() < 20 || theatres.size() < 2) {
+            System.out.println("Not enough movies or theatres to create showings.");
+            return;
+        }
+
+        Theatre theatre1 = theatres.get(0);
+        Theatre theatre2 = theatres.get(1);
+
+        LocalDate baseDate = LocalDate.now().plusDays(1);
+
+        List<Showing> showings = List.of(
+                createShowing(movies.get(0), theatre1, baseDate.atTime(10, 0), 95),
+                createShowing(movies.get(1), theatre2, baseDate.atTime(10, 30), 110),
+                createShowing(movies.get(2), theatre1, baseDate.atTime(13, 0), 85),
+                createShowing(movies.get(3), theatre2, baseDate.atTime(13, 30), 100),
+                createShowing(movies.get(4), theatre1, baseDate.atTime(16, 0), 120),
+                createShowing(movies.get(5), theatre2, baseDate.atTime(16, 30), 105),
+                createShowing(movies.get(6), theatre1, baseDate.atTime(19, 0), 80),
+                createShowing(movies.get(7), theatre2, baseDate.atTime(19, 30), 115),
+                createShowing(movies.get(8), theatre1, baseDate.atTime(21, 30), 75),
+                createShowing(movies.get(9), theatre2, baseDate.atTime(22, 0), 110),
+
+                createShowing(movies.get(10), theatre1, baseDate.plusDays(1).atTime(10, 0), 90),
+                createShowing(movies.get(11), theatre2, baseDate.plusDays(1).atTime(10, 30), 100),
+                createShowing(movies.get(12), theatre1, baseDate.plusDays(1).atTime(13, 0), 85),
+                createShowing(movies.get(13), theatre2, baseDate.plusDays(1).atTime(13, 30), 120),
+                createShowing(movies.get(14), theatre1, baseDate.plusDays(1).atTime(16, 0), 80),
+                createShowing(movies.get(15), theatre2, baseDate.plusDays(1).atTime(16, 30), 105),
+                createShowing(movies.get(16), theatre1, baseDate.plusDays(1).atTime(19, 0), 75),
+                createShowing(movies.get(17), theatre2, baseDate.plusDays(1).atTime(19, 30), 110),
+                createShowing(movies.get(18), theatre1, baseDate.plusDays(1).atTime(22, 0), 95),
+                createShowing(movies.get(19), theatre2, baseDate.plusDays(1).atTime(22, 30), 125)
+        );
+
+        showingRepository.saveAll(showings);
+        System.out.println("20 showings created.");
+    }
+
+    private Showing createShowing(Movie movie, Theatre theatre, LocalDateTime startTime, double price) {
+        Showing showing = new Showing();
+        showing.setMovie(movie);
+        showing.setTheatre(theatre);
+        showing.setStartTime(startTime);
+        showing.setEndTime(startTime.plusMinutes(movie.getDuration()));
+        showing.setPrice(price);
+        return showing;
     }
 }

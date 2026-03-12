@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/cinemas")
-public class CinemaController extends CrudRestController<Cinema, Long> {
+@RequestMapping("/api/admin/cinemas")
+public class AdminCinemaController extends CrudRestController<Cinema, Long> {
 
-    public CinemaController(CinemaService service) {
+    public AdminCinemaController(CinemaService service) {
         super(service);
     }
 }

@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/reservation-seats")
-public class ReservationSeatController {
+@RequestMapping("/api/admin/reservation-seats")
+public class AdminReservationSeatController {
 
-    public ReservationSeatController(ReservationSeatService service) {
+    public AdminReservationSeatController(ReservationSeatService service) {
 
     }
 }
