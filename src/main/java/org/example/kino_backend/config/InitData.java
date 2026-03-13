@@ -177,6 +177,7 @@ public class InitData implements CommandLineRunner {
         LocalDate baseDate = LocalDate.now().plusDays(1);
 
         List<Showing> showings = List.of(
+                // ---------- DAY 1 ----------
                 createShowing(movies.get(0), theatre1, baseDate.atTime(10, 0), 95),
                 createShowing(movies.get(1), theatre2, baseDate.atTime(10, 30), 110),
                 createShowing(movies.get(2), theatre1, baseDate.atTime(13, 0), 85),
@@ -188,6 +189,7 @@ public class InitData implements CommandLineRunner {
                 createShowing(movies.get(8), theatre1, baseDate.atTime(21, 30), 75),
                 createShowing(movies.get(9), theatre2, baseDate.atTime(22, 0), 110),
 
+                // ---------- DAY 2 ----------
                 createShowing(movies.get(10), theatre1, baseDate.plusDays(1).atTime(10, 0), 90),
                 createShowing(movies.get(11), theatre2, baseDate.plusDays(1).atTime(10, 30), 100),
                 createShowing(movies.get(12), theatre1, baseDate.plusDays(1).atTime(13, 0), 85),
@@ -197,11 +199,35 @@ public class InitData implements CommandLineRunner {
                 createShowing(movies.get(16), theatre1, baseDate.plusDays(1).atTime(19, 0), 75),
                 createShowing(movies.get(17), theatre2, baseDate.plusDays(1).atTime(19, 30), 110),
                 createShowing(movies.get(18), theatre1, baseDate.plusDays(1).atTime(22, 0), 95),
-                createShowing(movies.get(19), theatre2, baseDate.plusDays(1).atTime(22, 30), 125)
+                createShowing(movies.get(19), theatre2, baseDate.plusDays(1).atTime(22, 30), 125),
+
+                // ---------- DAY 3 (reuse movies 0–9) ----------
+                createShowing(movies.get(0), theatre1, baseDate.plusDays(2).atTime(10, 0), 95),
+                createShowing(movies.get(1), theatre2, baseDate.plusDays(2).atTime(10, 30), 110),
+                createShowing(movies.get(2), theatre1, baseDate.plusDays(2).atTime(13, 0), 85),
+                createShowing(movies.get(3), theatre2, baseDate.plusDays(2).atTime(13, 30), 100),
+                createShowing(movies.get(4), theatre1, baseDate.plusDays(2).atTime(16, 0), 120),
+                createShowing(movies.get(5), theatre2, baseDate.plusDays(2).atTime(16, 30), 105),
+                createShowing(movies.get(6), theatre1, baseDate.plusDays(2).atTime(19, 0), 80),
+                createShowing(movies.get(7), theatre2, baseDate.plusDays(2).atTime(19, 30), 115),
+                createShowing(movies.get(8), theatre1, baseDate.plusDays(2).atTime(21, 30), 75),
+                createShowing(movies.get(9), theatre2, baseDate.plusDays(2).atTime(22, 0), 110),
+
+                // ---------- DAY 4 (reuse movies 10–19) ----------
+                createShowing(movies.get(10), theatre1, baseDate.plusDays(3).atTime(10, 0), 90),
+                createShowing(movies.get(11), theatre2, baseDate.plusDays(3).atTime(10, 30), 100),
+                createShowing(movies.get(12), theatre1, baseDate.plusDays(3).atTime(13, 0), 85),
+                createShowing(movies.get(13), theatre2, baseDate.plusDays(3).atTime(13, 30), 120),
+                createShowing(movies.get(14), theatre1, baseDate.plusDays(3).atTime(16, 0), 80),
+                createShowing(movies.get(15), theatre2, baseDate.plusDays(3).atTime(16, 30), 105),
+                createShowing(movies.get(16), theatre1, baseDate.plusDays(3).atTime(19, 0), 75),
+                createShowing(movies.get(17), theatre2, baseDate.plusDays(3).atTime(19, 30), 110),
+                createShowing(movies.get(18), theatre1, baseDate.plusDays(3).atTime(22, 0), 95),
+                createShowing(movies.get(19), theatre2, baseDate.plusDays(3).atTime(22, 30), 125)
         );
 
         showingRepository.saveAll(showings);
-        System.out.println("20 showings created.");
+        System.out.println("40 showings created.");
     }
 
     private Showing createShowing(Movie movie, Theatre theatre, LocalDateTime startTime, double price) {
