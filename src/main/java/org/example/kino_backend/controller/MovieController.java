@@ -28,6 +28,14 @@ public class MovieController {
         return ResponseEntity.ok(dtos);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<MovieDTO> findById(Long id) {
+        return movieService.findById(id)
+                .map(MovieDTO::fromEntity)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @GetMapping("/{id}/showings")
     public ResponseEntity<List<ShowingDTO>> getShowings(@PathVariable Long id) {
         if(!movieService.existsById(id)) {
