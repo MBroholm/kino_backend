@@ -34,6 +34,11 @@ public class MovieController {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(movieService.getShowingsForMovie(id));
+        List<ShowingDTO> dtos = movieService.getShowingsForMovie(id)
+                .stream()
+                .map(ShowingDTO::fromEntity)
+                .toList();
+
+        return ResponseEntity.ok(dtos);
     }
 }
