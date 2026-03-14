@@ -1,5 +1,6 @@
 package org.example.kino_backend.service;
 
+import org.example.kino_backend.dto.CreateEmployeeRequest;
 import org.example.kino_backend.model.Employee;
 import org.example.kino_backend.model.EmployeeRole;
 import org.example.kino_backend.repository.EmployeeRepository;
@@ -21,16 +22,19 @@ public class EmployeeService extends CrudServiceImpl<Employee, Long> {
         this.encoder = passwordEncoder;
     }
 
-    public Employee createEmployee(String username, String rawPassword) {
+    public Employee createEmployee(CreateEmployeeRequest req) {
         Employee employee = new Employee();
-        employee.setUsername(username);
-        employee.setPasswordHash(encoder.encode(rawPassword));
-        employee.getRole().add(EmployeeRole.ADMIN);
+        employee.setUsername(req.username());
+        employee.setPasswordHash(encoder.encode(req.password()));
+        employee.getRole().addAll(req.roles());
         return save(employee);
     }
 
     public Optional<Employee> authenticate(String username, String rawPassword) {
         return employeeRepository.findByUsername(username)
                 .filter(u -> encoder.matches(rawPassword, u.getPasswordHash()));
+    }
+
+    public Employee create(CreateEmployeeRequest req) {
     }
 }
