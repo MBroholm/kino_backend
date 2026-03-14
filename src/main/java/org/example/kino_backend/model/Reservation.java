@@ -8,6 +8,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -41,6 +42,7 @@ public class Reservation implements Identifiable<Long> {
     private void onCreate(){
         this.createdAt = LocalDateTime.now();
         this.status = ReservationStatus.RESERVED;
+        this.referenceNumber = generateReferenceNumber();
     }
 
     @Override
@@ -51,5 +53,12 @@ public class Reservation implements Identifiable<Long> {
     @Override
     public Long getId() {
         return reservationId;
+    }
+
+    private String generateReferenceNumber() {
+        return UUID.randomUUID().toString()
+                .replace("-", "")
+                .substring(0,10)
+                .toUpperCase();
     }
 }
