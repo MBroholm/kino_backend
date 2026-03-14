@@ -1,11 +1,11 @@
 package org.example.kino_backend.service;
 
+import org.example.kino_backend.dto.CreateMovieRequest;
 import org.example.kino_backend.model.Movie;
 import org.example.kino_backend.model.Showing;
 import org.example.kino_backend.repository.MovieRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -23,5 +23,16 @@ public class MovieService extends CrudServiceImpl<Movie, Long> {
                 .orElseThrow(() -> new IllegalArgumentException("Movie not found: " + movieId));
 
         return movie.getShowings();
+    }
+
+    public Movie create(CreateMovieRequest request) {
+        Movie movie = new Movie();
+        movie.setTitle(request.title());
+        movie.setAgeLimit(request.ageLimit());
+        movie.setDuration(request.duration());
+        movie.setCategories(request.categories());
+        movie.setDescription(request.description());
+
+        return save(movie);
     }
 }
