@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/metadata")
+@RequestMapping("/api/metadata")
 public class MetadataController {
 
     @GetMapping("/categories")
