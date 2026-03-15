@@ -13,7 +13,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-public class Reservation implements Identifiable<Long> {
+public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,16 +43,6 @@ public class Reservation implements Identifiable<Long> {
         this.createdAt = LocalDateTime.now();
         this.status = ReservationStatus.RESERVED;
         this.referenceNumber = generateReferenceNumber();
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.reservationId = id;
-    }
-
-    @Override
-    public Long getId() {
-        return reservationId;
     }
 
     private String generateReferenceNumber() {

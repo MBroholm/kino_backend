@@ -11,7 +11,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-public class Showing implements Identifiable<Long> {
+public class Showing {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long showingId;
@@ -36,13 +36,4 @@ public class Showing implements Identifiable<Long> {
     @OneToMany(mappedBy = "showing", cascade = CascadeType.ALL)
     private Set<Reservation> reservationSeats = new HashSet<>();
 
-    @Override
-    public void setId(Long id) {
-        this.showingId = id;
-    }
-
-    @Override
-    public Long getId() {
-        return showingId;
-    }
 }

@@ -10,7 +10,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-public class Movie implements Identifiable<Long> {
+public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long movieId;
@@ -45,13 +45,4 @@ public class Movie implements Identifiable<Long> {
         this.description = description;
     }
 
-    @Override
-    public void setId(Long id) {
-        this.movieId = id;
-    }
-
-    @Override
-    public Long getId() {
-        return movieId;
-    }
 }

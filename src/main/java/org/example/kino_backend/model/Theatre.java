@@ -13,7 +13,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-public class Theatre implements Identifiable<Long> {
+public class Theatre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long theatreId;
@@ -87,13 +87,4 @@ public class Theatre implements Identifiable<Long> {
         return seatRows.isEmpty() ? 1 : seatRows.getLast().getSeatRowNumber() + 1;
     }
 
-    @Override
-    public void setId(Long id) {
-        this.theatreId = id;
-    }
-
-    @Override
-    public Long getId() {
-        return theatreId;
-    }
 }

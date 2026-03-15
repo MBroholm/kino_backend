@@ -10,7 +10,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-public class Cinema implements Identifiable<Long>{
+public class Cinema {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cinemaId;
@@ -35,13 +35,4 @@ public class Cinema implements Identifiable<Long>{
         theatres.add(theatre);
     }
 
-    @Override
-    public void setId(Long id) {
-        this.cinemaId = id;
-    }
-
-    @Override
-    public Long getId() {
-        return cinemaId;
-    }
 }
