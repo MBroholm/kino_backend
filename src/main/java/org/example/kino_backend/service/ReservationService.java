@@ -6,6 +6,7 @@ import org.example.kino_backend.repository.ReservationRepository;
 import org.example.kino_backend.repository.SeatRepository;
 import org.example.kino_backend.repository.ShowingRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -29,6 +30,7 @@ public class ReservationService extends CrudServiceImpl<Reservation, Long> {
         this.seatRepository = seatRepository;
     }
 
+    @Transactional
     public Reservation create(CreateReservationRequest req) {
 
         Showing showing = loadShowing(req.showingId());
