@@ -1,6 +1,7 @@
 package org.example.kino_backend.service;
 
 import org.example.kino_backend.dto.CreateMovieRequest;
+import org.example.kino_backend.dto.UpdateMovieRequest;
 import org.example.kino_backend.model.Movie;
 import org.example.kino_backend.model.Showing;
 import org.example.kino_backend.repository.MovieRepository;
@@ -27,6 +28,19 @@ public class MovieService extends CrudServiceImpl<Movie, Long> {
 
     public Movie create(CreateMovieRequest request) {
         Movie movie = new Movie();
+        movie.setTitle(request.title());
+        movie.setAgeLimit(request.ageLimit());
+        movie.setDuration(request.duration());
+        movie.setCategories(request.categories());
+        movie.setDescription(request.description());
+
+        return save(movie);
+    }
+
+    public Movie update(Long id, UpdateMovieRequest request) {
+        Movie movie = movieRepository.findById(id)
+                .orElseThrow( () -> new IllegalArgumentException("Movie not found: " + id));
+
         movie.setTitle(request.title());
         movie.setAgeLimit(request.ageLimit());
         movie.setDuration(request.duration());
