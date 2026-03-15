@@ -27,10 +27,14 @@ public class AdminEmployeeController {
 
     @PostMapping
     public ResponseEntity<EmployeeDTO> create(@RequestBody CreateEmployeeRequest req) {
-        Employee employee = employeeService.create(req);
+        Employee employee = employeeService.createEmployee(req);
         EmployeeDTO dto = EmployeeDTO.fromEntity(employee);
         return ResponseEntity.status(201).body(dto);
-
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        employeeService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }
