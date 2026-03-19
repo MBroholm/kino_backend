@@ -12,6 +12,8 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     volumes:
       - mysqldata:/var/lib/mysql
+    networks:
+      - db-net
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${DB_PASSWORD:-x}"]
       interval: 10s
@@ -27,6 +29,9 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - db-net    # To talk to the database
+      - app-net   # To be reached by the frontend
 
   frontend:
     image: ghcr.io/ek-barhjamagmik/kino_frontend:latest
@@ -34,6 +39,14 @@ services:
       - "80:80"
     depends_on:
       - app
+    networks:
+      - app-net   # To talk to the app
+
+networks:
+  db-net:      # Internal network for DB <-> Backend
+    driver: bridge
+  app-net:     # Internal network for Backend <-> Frontend
+    driver: bridge
 
 volumes:
   mysqldata:
