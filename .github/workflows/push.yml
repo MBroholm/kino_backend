@@ -68,10 +68,10 @@ jobs:
             cd ~/kino-app
 
             # Pull the latest images
-            docker compose -f docker-compose.prod.yml pull
+            docker compose -f docker-compose.prod.yml pull app
 
             # Restart with the new images
-            docker compose -f docker-compose.prod.yml up -d
+            docker compose -f docker-compose.prod.yml up -d app
 
             # Clean up old images
             docker image prune -f
